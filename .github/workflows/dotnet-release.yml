@@ -71,26 +71,15 @@ jobs:
            zip -r ../z/linux-x64-self-contained.zip linux-x64-self-contained/
            zip -r ../z/linux-arm64-self-contained linux-arm64-self-contained/
            cd ..
-
-    - name: Body
-      run: |
-           echo -e "${{ inputs.body }}" > z/body.txt
-
-    - name: Release
-      uses: softprops/action-gh-release@v2
+    - name: Upload archive artifacts
+      uses: actions/upload-artifact@v4
       with:
-        body_path: z/body.txt
-        name: ${{ inputs.name }}
-        tag_name: Release-${{ github.sha }}
-        repository: EggLinks/DanhengServer-Public
-        # note you'll typically need to create a personal access token
-        # with permissions to create releases in the other repo
-        token: ${{ secrets.GITHUB_TOKEN }}
-        # upload except pdb file
-        files: |
+        name: danhengserver-release-zips
+        path: |
           z/win-x64.zip
           z/linux-x64.zip
           z/linux-arm64.zip
           z/win-x64-self-contained.zip
           z/linux-x64-self-contained.zip
           z/linux-arm64-self-contained.zip
+        retention-days: 30
